@@ -1,5 +1,6 @@
 from tkinter import *
 from tkinter import ttk
+from PIL import ImageGrab
 root = Tk()
 root.title("Paint")
 root.geometry("800x800")
@@ -56,6 +57,17 @@ def paint(event):
             canvas.create_oval(event.x, event.y, event.x + 40, event.y + 40, fill="black",outline="black")
         else:
             canvas.create_oval(event.x, event.y, event.x + 10, event.y + 10, fill="black",outline="black")
+def save():
+    x1 = canvas.winfo_rootx()
+    y1 = canvas.winfo_rooty()
+    x2 = x1 + canvas.winfo_width()
+    y2 = y1 + canvas.winfo_height()
+    
+    # Захватываем изображение холста
+    img = ImageGrab.grab((x1, y1, x2, y2))
+    
+    # Сохраняем изображение в файл
+    img.save("my_canvas_image.png")
 def clear():
     canvas.delete('all')
 # Используем событие "<B1-Motion>" — движение мыши с нажатой левой кнопкой
@@ -69,4 +81,6 @@ combobox.place(x=50,y=618)
 #размер пера
 combobox2 = ttk.Combobox(values=size, state="readonly")
 combobox2.place(x=80,y=655)
+# сохранить
+Button(root,text="Сохранить",command=save).place(x=100,y=700)
 root.mainloop()
